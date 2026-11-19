@@ -42,8 +42,11 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         Some("list") if args.len() == 2 => list_records(Path::new(&args[1])),
         Some("status") if args.len() == 2 => show_status(Path::new(&args[1])),
         Some("watch") if args.len() == 2 => watch(Path::new(&args[1])),
+        Some("export-object") if args.len() == 3 => export_object(Path::new(&args[1]), Path::new(&args[2])),
+        Some("import-object") if args.len() == 3 => import_object(Path::new(&args[1]), Path::new(&args[2])),
+        Some("verify-object") if args.len() == 2 => verify_object(Path::new(&args[1])).map(|info| println!("Verified Origin {} / Version {} ({}, {} bytes)", info.origin, info.version, info.media_type, info.size)),
         _ => {
-            eprintln!("Usage:\n  originchain-runtime init <state-dir>\n  originchain-runtime add-folder <state-dir> <folder>\n  originchain-runtime exclude|include <state-dir> <folder>\n  originchain-runtime pause|resume|list|status|watch <state-dir>");
+            eprintln!("Usage:\n  originchain-runtime init <state-dir>\n  originchain-runtime add-folder <state-dir> <folder>\n  originchain-runtime exclude|include <state-dir> <folder>\n  originchain-runtime pause|resume|list|status|watch <state-dir>\n  originchain-runtime export-object <media-file> <new-object-dir.ocp>\n  originchain-runtime verify-object <object-dir.ocp>\n  originchain-runtime import-object <object-dir.ocp> <new-media-file>");
             Err("invalid command".into())
         }
     }
@@ -356,6 +359,91 @@ fn verify_sidecar(package: &Value, expected_hash: &str, expected_size: u64) -> R
     let verifying_key = match VerifyingKey::from_bytes(&public) { Ok(key) => key, Err(_) => return Ok(false) };
     let signature = Signature::from_slice(&signature)?;
     Ok(verifying_key.verify(&signed, &signature).is_ok())
+}
+
+struct ObjectInfo { origin: String, version: String, media_type: String, size: u64 }
+
+fn verify_object(directory: &Path) -> Result<ObjectInfo, Box<dyn std::error::Error>> {
+    if !directory.is_dir() { return Err(format!("{} is not an object directory", directory.display()).into()); }
+    let format_path = directory.join("format.json");
+    let content_path = directory.join("content.bin");
+    let manifest_path = directory.join("manifest.json");
+    for path in [&format_path, &content_path, &manifest_path] {
+        let metadata = fs::symlink_metadata(path)?;
+        if metadata.file_type().is_symlink() || !metadata.is_file() { return Err(format!("{} must be a regular file", path.display()).into()); }
+    }
+    let format: Value = serde_json::from_slice(&fs::read(format_path)?)?;
+    if format.get("format").and_then(Value::as_str) != Some("originchain-portable-object") ||
+       format.get("format_version").and_then(Value::as_str) != Some("1") ||
+       format.get("content_file").and_then(Value::as_str) != Some("content.bin") ||
+       format.get("manifest_file").and_then(Value::as_str) != Some("manifest.json") {
+        return Err("unsupported portable object format".into());
+    }
+    let (size, _) = file_stamp(&content_path)?;
+    let hash = hash_file(&content_path)?;
+    let package: Value = serde_json::from_slice(&fs::read(manifest_path)?)?;
+    if !verify_sidecar(&package, &hash, size)? { return Err("portable object content or signed manifest did not verify".into()); }
+    let core = package.get("manifest").ok_or("portable object has no manifest")?;
+    let media_type = string_field(core, "media_type")?.to_owned();
+    if !media_type.starts_with("image/") && !media_type.starts_with("video/") { return Err("unsupported media type".into()); }
+    Ok(ObjectInfo {
+        origin: string_field(core, "origin_id")?.to_owned(),
+        version: string_field(core, "version_id")?.to_owned(),
+        media_type,
+        size,
+    })
+}
+
+fn export_object(media: &Path, destination: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    if destination.exists() { return Err(format!("{} already exists; choose a new destination", destination.display()).into()); }
+    let media = media.canonicalize()?;
+    let sidecar = sidecar_path(&media);
+    let sidecar_bytes = match fs::read(&sidecar) {
+        Ok(bytes) => bytes,
+        Err(_) => return Err("media file has no OriginChain sidecar; start the runtime or import a registered identity first".into()),
+    };
+    let package: Value = serde_json::from_slice(&sidecar_bytes)?;
+    let (size, _) = file_stamp(&media)?;
+    let hash = hash_file(&media)?;
+    if !verify_sidecar(&package, &hash, size)? { return Err("media and signed sidecar do not verify".into()); }
+    let core = package.get("manifest").ok_or("sidecar has no manifest")?;
+    if package.get("manifest").and_then(|m| m.get("media_type")).and_then(Value::as_str) != media_type(&media).as_deref() {
+        return Err("media type does not match the signed sidecar".into());
+    }
+    fs::create_dir_all(destination)?;
+    let result = (|| -> Result<(), Box<dyn std::error::Error>> {
+        fs::copy(&media, destination.join("content.bin"))?;
+        fs::write(destination.join("manifest.json"), serde_json::to_vec_pretty(&package)?)?;
+        fs::write(destination.join("format.json"), serde_json::to_vec_pretty(&json!({
+            "format": "originchain-portable-object", "format_version": "1",
+            "content_file": "content.bin", "manifest_file": "manifest.json"
+        }))?)?;
+        let info = verify_object(destination)?;
+        if info.origin != string_field(core, "origin_id")? { return Err("exported object identity mismatch".into()); }
+        Ok(())
+    })();
+    if result.is_err() { let _ = fs::remove_dir_all(destination); }
+    result?;
+    println!("Exported signed OriginChain identity to {}", destination.display());
+    Ok(())
+}
+
+fn import_object(source: &Path, destination: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    let info = verify_object(source)?;
+    if destination.exists() || sidecar_path(destination).exists() { return Err("destination media or sidecar already exists; choose a new path".into()); }
+    if media_type(destination).as_deref() != Some(info.media_type.as_str()) {
+        return Err(format!("destination filename must have an extension matching {}", info.media_type).into());
+    }
+    if let Some(parent) = destination.parent() { fs::create_dir_all(parent)?; }
+    let content = source.join("content.bin");
+    let package: Value = serde_json::from_slice(&fs::read(source.join("manifest.json"))?)?;
+    if let Err(error) = fs::copy(content, destination) { return Err(error.into()); }
+    if let Err(error) = write_sidecar(&sidecar_path(destination), &package) {
+        let _ = fs::remove_file(destination);
+        return Err(error);
+    }
+    println!("Imported Origin {} / Version {} to {}", info.origin, info.version, destination.display());
+    Ok(())
 }
 
 fn record_event(runtime: &Runtime, event_type: &str, origin: Option<&str>, version: Option<&str>, before: Option<&str>, after: Option<&str>, result_state: &str, details: Value) -> Result<(), Box<dyn std::error::Error>> {

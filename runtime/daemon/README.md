@@ -28,6 +28,18 @@ target/debug/originchain-runtime resume "$HOME/.local/share/originchain"
 target/debug/originchain-runtime exclude "$HOME/.local/share/originchain" "$HOME/Pictures/OriginChain-watch/private"
 ```
 
+## Carry identity with media
+
+Export requires an existing valid `.originchain.json` sidecar. The object is a directory with the `.ocp` suffix; copy the whole directory to another device.
+
+```sh
+target/debug/originchain-runtime export-object "$HOME/Pictures/OriginChain-watch/photo.jpg" "$HOME/Desktop/photo.ocp"
+target/debug/originchain-runtime verify-object "$HOME/Desktop/photo.ocp"
+target/debug/originchain-runtime import-object "$HOME/Desktop/photo.ocp" "$HOME/Pictures/imported-photo.jpg"
+```
+
+Import preserves the Origin ID and Version ID, copies the exact media bytes, and writes the same signed manifest beside the imported file. It refuses to overwrite an existing file or sidecar. See [OCPO v1](../../specs/ocpo-spec.md) for the portable format.
+
 `exclude` and `include` accept existing directories. Exclusions apply recursively. The Linux MVP recognizes image and video extensions through MIME type detection. Watch only folders where adding sidecars is acceptable; a future UI will make review and sidecar placement more flexible.
 
 ## Current limitations
@@ -35,6 +47,6 @@ target/debug/originchain-runtime exclude "$HOME/.local/share/originchain" "$HOME
 - Early development; the CLI and local database are not yet a polished installer or desktop service.
 - A filesystem change is evidence that bytes changed, not proof of who or what changed them.
 - Changed files require a user/application workflow to approve and create a new version; that workflow is not implemented yet.
-- Signed package export/import and cross-device identity recovery are the next milestone.
+- Cross-device transfer is an early directory-package implementation; it needs a manual copy/import smoke run and broader interoperability review.
 - The watcher uses recursive notifications plus restart reconciliation; notification overflow handling and platform-specific coverage reporting still need work.
 - Only the local Linux service is implemented. No chain registration or hosted synchronization occurs.

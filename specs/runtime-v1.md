@@ -78,7 +78,7 @@ Build an opt-in Rust service for user-selected directories, SQLite state, stream
 
 ### R3 — Linux portable identity
 
-Export/import a signed provenance package and verify identity after copying it to another directory or device. Add explicit wallet-assisted devnet registration from the existing Explorer/API flow.
+Export/import a signed provenance package and verify identity after copying it to another directory or device. Initial OCPO v1 directory-format CLI commands now exist (`export-object`, `verify-object`, `import-object`); complete the manual cross-device smoke run and interoperability review before marking R3 complete. Add explicit wallet-assisted devnet registration from the existing Explorer/API flow.
 
 ### R4 — macOS and Windows adapters
 

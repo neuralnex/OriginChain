@@ -28,13 +28,14 @@ Updated: 2026-11-19
 - [x] User ran the backend with SQLite and the Solana devnet adapter for that registration.
 - [ ] Exercise PostgreSQL deployment configuration.
 - [ ] Event indexer and reconciliation worker.
-- [ ] Portable object format.
+- [x] Initial Linux OCPO v1 directory format and CLI export/verify/import flow implemented; manual copy/import smoke run remains.
 - [ ] Runtime and application integrations.
 - [x] Defined the device-runtime coverage model and iOS/macOS/Windows/Linux/Android delivery order in `specs/runtime-v1.md`.
 - [x] Recorded the open-source adapters + hosted collaboration platform model and founder-funded free launch in `specs/platform-v1.md`.
 - [x] R1 runtime protocol details, device-local signed identities, state model, permission controls, and reconciliation rules documented in `specs/runtime-v1.md`.
 - [x] R2 early Linux local identity observer implemented in `runtime/daemon`: selected-folder watching, SQLite index, local signed sidecars/events, streaming image/video hashes, pause/exclusion controls, and restart reconciliation.
 - [ ] Manually smoke-run Linux runtime lifecycle: new file, unchanged restart, copied file, changed tracked file, exclusion, and pause/resume. No media upload or chain write is part of this slice.
+- [ ] Manually smoke-run OCPO export, copy, verify, and import; confirm imported Origin ID, Version ID, and bytes match the source.
 - [ ] Hosted user/team accounts, collaboration permissions, managed media/file sharing, and object storage.
 - [ ] Sponsored Solana registration with bounded platform payer and user creator identity.
 - [ ] Explorer history, verification, and version creation screens.
@@ -62,4 +63,4 @@ Python 3.12, rustup Rust 1.100.0, Solana CLI 4.4.1, Anchor CLI 1.2.2, Node 22, n
 
 M1, M2, local M3, and the devnet deployment/registry initialization are complete. The current RFC 8785 known-answer fixture contains only ASCII strings; a wider cross-language Unicode/string suite remains before protocol release. The global Solana CLI endpoint remains mainnet; project Anchor commands target devnet through `Anchor.toml`.
 
-The browser registration and API-to-devnet transaction path has been demonstrated by the user with a real image. The backend does not store submitted media bytes. Solana-backed registration requires a wallet-signed transaction; the repository contains no server-side signing key. The Linux runtime is early development: it builds, but the local lifecycle still needs a manual smoke run; portable export/import is not implemented.
+The browser registration and API-to-devnet transaction path has been demonstrated by the user with a real image. The backend does not store submitted media bytes. Solana-backed registration requires a wallet-signed transaction; the repository contains no server-side signing key. The Linux runtime and OCPO CLI are early development: both build, but the local lifecycle and cross-device portable-object flow still need manual smoke runs. There is no hosted synchronization or chain publishing in the runtime.

@@ -9,10 +9,10 @@ Milestones are gated by demonstrated behavior. The dedicated OS is a long-term g
 | M3 Solana program | Anchor registry, asset/version accounts, authorization, events | LiteSVM scenarios cover registration, branches, unchanged-content rejection, editor grants/revocation, and unauthorized calls. |
 | M4 Backend | FastAPI, PostgreSQL/SQLite, migrations, API, chain adapter | API contracts, idempotency, signed manifests, and local mock flow work; Solana adapter confirms wallet-signed account commitments. |
 | M5 Verification/indexer | Independent chain and manifest verification | Verifier distinguishes verified, unverified, tampered, and incomplete evidence. |
-| M6 Portable object | Versioned archive with safe import/export | Round trips preserve content and IDs; malformed archives and path traversal are rejected. |
+| M6 Portable object | Versioned OCPO package with safe import/export | Round trips preserve content and IDs; malformed objects and path traversal are rejected. |
 | M7 Runtime protocol | Local identity states, privacy/coverage model, device keys, reconciliation contract | Device identity, registered identity, and authorship claims are clearly distinct. |
 | M8 Linux runtime | Rust user service, SQLite, selected-folder observer, local image/video IDs | Local identity survives restart; pause/exclusions/reconciliation work; no content upload or chain write happens silently. |
-| M9 Portable identity | Signed provenance package and Linux runtime import/export | A copied package verifies on another device; an ordinary file transfer adds no version. |
+| M9 Portable identity | Signed OCPO v1 directory package and Linux runtime import/export | A copied package verifies on another device; an ordinary file transfer adds no version. |
 | M10 Desktop platforms | Native macOS and Windows permission, watcher, and share/file-manager adapters | Selected locations work with accurate coverage and restart recovery. |
 | M11 Mobile platforms | Native Android and iOS capture/import/share apps and permission-limited library integrations | Users can assign identity at capture/import; limited media access and background limits are surfaced honestly. |
 | M12 Hosted collaboration platform | User/team accounts, workspaces, roles, private media/file sharing, history | Authorized collaborators can share and retrieve encrypted objects; deletion and public-chain limits are clear. |
@@ -23,4 +23,4 @@ Milestones are gated by demonstrated behavior. The dedicated OS is a long-term g
 
 ## Current milestone scope
 
-M1-M4 and the devnet program/registry are in place. The browser has registered an image on devnet. An early opt-in Linux local identity observer is now implemented; its next gates are a manual lifecycle smoke run and portable identity. Follow the device roadmap in order: Linux local identities, portable identity, macOS/Windows, then Android/iOS. Hosted collaboration and sponsored registration follow the native adapter milestones. There is no user/team authentication, managed media storage, or sponsored transaction service yet.
+M1-M4 and the devnet program/registry are in place. The browser has registered an image on devnet. An early opt-in Linux local identity observer and portable directory package are implemented; their next gates are manual lifecycle and cross-device smoke runs. Follow the device roadmap in order: Linux local identities, portable identity, macOS/Windows, then Android/iOS. Hosted collaboration and sponsored registration follow the native adapter milestones. There is no user/team authentication, managed media storage, or sponsored transaction service yet.
