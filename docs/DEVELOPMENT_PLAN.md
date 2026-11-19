@@ -7,7 +7,7 @@ Milestones are gated by demonstrated behavior. The dedicated OS is a long-term g
 | M1 Protocol | Normative protocol v1, schema, fixtures, decision log | IDs, hashes, signatures, event semantics, and branching are unambiguous and cross-language test vectors are published. |
 | M2 Cryptographic core | Python reference core, then matching TypeScript/Rust implementations | Identical file hashes, canonical bytes, manifest hashes, and signature verification across languages. |
 | M3 Solana program | Anchor registry, asset/version accounts, authorization, events | LiteSVM scenarios cover registration, branches, unchanged-content rejection, editor grants/revocation, and unauthorized calls. |
-| M4 Backend | FastAPI, PostgreSQL, migrations, API, chain adapter | API contracts and idempotency work with a deterministic chain adapter and staging validator. |
+| M4 Backend | FastAPI, PostgreSQL/SQLite, migrations, API, chain adapter | API contracts, idempotency, signed manifests, and local mock flow work; Solana adapter confirms wallet-signed account commitments. |
 | M5 Verification/indexer | Independent chain and manifest verification | Verifier distinguishes verified, unverified, tampered, and incomplete evidence. |
 | M6 Portable object | Versioned archive with safe import/export | Round trips preserve content and IDs; malformed archives and path traversal are rejected. |
 | M7 Runtime foundation | Rust local service, SQLite queue, Linux observer | Opt-in observation and offline reconciliation work without blocking saves. |
@@ -19,4 +19,4 @@ Milestones are gated by demonstrated behavior. The dedicated OS is a long-term g
 
 ## Current milestone scope
 
-M1 and M2 are complete: the contract is documented and Python/TypeScript implementations agree on the same signed known-answer vector. These milestones do not deploy a program, upload media, or claim live Solana verification. M3 implementation and LiteSVM scenarios are drafted; its first SBF build is in progress. No devnet deployment has occurred.
+M1 and M2 are complete: the contract is documented and Python/TypeScript implementations agree on the same signed known-answer vector. M3 builds locally; no devnet deployment has occurred. M4 now has an API implementation, persistence models and migration, local mock mode, wallet-signed Solana RPC adapter, and file verification endpoint. The backend has not yet been installed or exercised against PostgreSQL/devnet in this workspace.

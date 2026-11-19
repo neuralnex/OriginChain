@@ -17,7 +17,10 @@ Updated: 2026-11-19
 - [ ] Add a general RFC 8785 implementation comparison for non-ASCII and edge-case strings before protocol release.
 - [x] Solana program: Anchor instructions, SBF artifact, generated IDL, and LiteSVM scenarios build successfully.
 - [x] Anchor build ran the Rust unit and LiteSVM targets successfully.
-- [ ] Backend, indexer, and verification API.
+- [x] Backend API implementation: signed image/video registration, branching versions, history/manifests, upload limits, idempotency, SQLAlchemy records, Alembic migration, mock adapter, and Solana RPC adapter.
+- [x] File verification endpoint distinguishes verified, unverified, tampered, and incomplete; mock records never report verified.
+- [ ] Install backend dependencies and exercise local API against SQLite, PostgreSQL, and Solana devnet.
+- [ ] Event indexer and reconciliation worker.
 - [ ] Portable object format.
 - [ ] Runtime and application integrations.
 - [ ] Explorer.
@@ -40,3 +43,5 @@ Python 3.12, rustup Rust 1.100.0, Solana CLI 4.4.1, Anchor CLI 1.2.2, Node 22, n
 ## Completion record
 
 M1, M2, and local M3 acceptance checks pass. The current RFC 8785 known-answer fixture contains only ASCII strings; a wider cross-language Unicode/string suite remains before protocol release. The program has not been deployed to devnet.
+
+M4 code is implemented but not runtime-verified in this environment. The backend does not store submitted media bytes. Solana-backed registration requires a wallet-signed transaction; this repository contains no server-side signing key.

@@ -6,11 +6,11 @@ The first product milestone defines the protocol. The first user-facing MVP will
 
 ## Project status
 
-**Completed:** Protocol v1, Python/TypeScript cryptographic core, and local Solana program build.\
-**Next milestone:** Backend API and independent verification.\
+**Completed:** Protocol v1, Python/TypeScript cryptographic core, local Solana program build, and M4 backend implementation.\
+**Next milestone:** Run the backend locally, connect staging/devnet, and build the indexer and runtime.\
 **Blockchain:** Solana (confirmed).\
 **Program stack:** Rust + Anchor 1.2.2; Solana CLI 4.4.1.\
-**Other stack choices:** Python/FastAPI, PostgreSQL, Rust runtime, and Next.js/TypeScript are blueprint recommendations awaiting implementation.
+**Backend stack:** Python/FastAPI with SQLAlchemy and Alembic; SQLite for local startup and PostgreSQL configuration for deployment. Rust runtime and Next.js/TypeScript remain planned.
 
 See [the implementation status](docs/IMPLEMENTATION_STATUS.md), [development plan](docs/DEVELOPMENT_PLAN.md), and [protocol v1](specs/protocol-v1.md). The reference core lives in `packages/core/` and `packages/sdk-js/`.
 
@@ -23,7 +23,7 @@ Content bytes determine a version's integrity fingerprint. A transmission, copy,
 - `specs/` protocol, schemas, and conformance vectors
 - `packages/core/` Python protocol reference code
 - `programs/originchain/` Anchor registry and LiteSVM scenarios
-- `backend/` API, indexer, and verification services (planned)
+- `backend/` FastAPI, persistence, chain adapter, and verification API
 - `runtime/` local-first cross-platform observer (planned)
 - `packages/sdk-js/`, `packages/sdk-python/` developer SDKs (planned)
 - `apps/explorer/` asset explorer and verification UI (planned)

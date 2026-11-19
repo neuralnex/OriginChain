@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "originchain-backend"
+version = "0.1.0"
+description = "OriginChain API for signed image and video provenance"
+requires-python = ">=3.11"
+dependencies = [
+  "alembic>=1.13,<2",
+  "cryptography>=43,<47",
+  "fastapi>=0.115,<1",
+  "httpx>=0.27,<1",
+  "pydantic-settings>=2.6,<3",
+  "psycopg[binary]>=3.2,<4",
+  "python-multipart>=0.0.12,<1",
+  "solders>=0.21,<1",
+  "sqlalchemy>=2.0,<3",
+  "uvicorn[standard]>=0.32,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
