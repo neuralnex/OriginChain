@@ -48,6 +48,8 @@ signature = Ed25519.Sign(private_key, signature_message)
 
 `manifest_hash` is lowercase hexadecimal and is distinct from the random `manifest_id` in the core. The detached envelope records the algorithm (`Ed25519`), public key, and base58 signature. The envelope, Solana transaction reference, storage URI, and credentials are excluded from the core hash. The verifying key MUST be authorized for the claimed actor under the relevant identity/asset policy.
 
+Wallets that reject binary message payloads as transaction-like MUST use the optional envelope field `message_encoding: "utf8-hex-v1"`. Under this profile, the signed bytes are the UTF-8 encoding of `ORIGINCHAIN:MANIFEST-SIGNATURE:V1:UTF8-HEX:` followed by the lowercase hexadecimal `manifest_hash`. Verifiers MUST accept the original binary form when `message_encoding` is omitted and MUST reject unknown encodings. Implementations SHOULD show this text to the signer so the approval has clear context.
+
 ### 4.3 Application claims
 
 An optional application claim can name application and version, and optionally a model and version. It is a signed assertion by the manifest signer. It does not prove that the application or model produced the bytes. Stronger attestation evidence must be separately referenced and independently validated.

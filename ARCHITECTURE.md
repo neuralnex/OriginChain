@@ -7,14 +7,14 @@ OriginChain is a protocol, a Solana-backed platform, and a local-first runtime. 
 1. **Protocol:** identifiers, byte hashing, canonical manifests, signatures, event semantics, version graph rules, and verification outcomes.
 2. **Solana program:** ownership and editor authorization, asset/version commitments, and indexable events. Media bytes and private identity evidence remain off-chain.
 3. **Backend:** authenticated API, object storage adapter, chain submission, indexer, and verification services. Its database is an index/cache, not the authority for chain commitments.
-4. **Runtime:** opt-in local file observation, hashing, event queue, and reconciliation. It must not block ordinary saves or silently upload content.
-5. **SDKs and integrations:** signed declarations from applications and reusable protocol operations.
-6. **Explorer:** history and verification UI that distinguishes actual chain evidence from demo or backend-only data.
-7. **Dedicated OS:** long-term direction, contingent on a stable protocol/runtime and security review.
+4. **Open adapters:** cloneable, permission-aware OS/app connectors that create local identities and synchronize with a configurable hosted or self-hosted endpoint.
+5. **Hosted platform:** workspaces, collaboration permissions, off-chain media/file sharing, history, verification, and chain registration.
+6. **SDKs and integrations:** signed declarations from applications and reusable protocol operations.
+7. **Dedicated OS:** long-term possibility, contingent on a stable protocol/runtime and security review. The first product is native adapters and services on existing operating systems.
 
 ## Data flow
 
-The client hashes exact file bytes, creates and signs a canonical manifest, and requests registration or version creation. The backend validates the request and submits a commitment to Solana. An indexer records the transaction reference. A verifier can independently recompute the file hash, validate the manifest signature, and check the chain commitment without trusting the backend's answer.
+The capture app or permitted device runtime hashes exact file bytes and creates a local identity and signed manifest. It can sync the manifest and an authorized media object to a hosted or self-hosted platform. A user may request chain registration; the user's signature identifies the creator while a platform sponsor may pay transaction fees and account rent. An indexer records the transaction reference. A verifier can independently recompute the file hash, validate the manifest signature, and check the chain commitment without trusting the backend's answer.
 
 The first release favors one independently verifiable on-chain record per version. Batching commitments under Merkle roots is deferred until inclusion proofs and availability rules are specified.
 
@@ -24,4 +24,4 @@ On-chain records are public. The MVP therefore requires explicit user registrati
 
 ## Initial implementation boundaries
 
-Protocol v1 is media-agnostic. Image and video workflows are the first acceptance scenarios. Runtime monitoring is opt-in and local-first. Platform-specific filesystem adapters, broad integrations, and a dedicated OS follow the protocol, verification, and Linux runtime foundations.
+Protocol v1 is media-agnostic. Image and video workflows are the first acceptance scenarios. Runtime monitoring is opt-in and local-first. The platform roadmap starts with a Linux service, then macOS/Windows desktop adapters, then Android/iOS native capture and share surfaces. See [Device Runtime v1](specs/runtime-v1.md) for coverage boundaries and gates.

@@ -5,9 +5,12 @@ skip-lint = false
 [programs.localnet]
 originchain_program = "J6grB9Db5FjKYkGLWf4n81BZg75WEE9KVXbnq5XZBcg1"
 
+[programs.devnet]
+originchain_program = "J6grB9Db5FjKYkGLWf4n81BZg75WEE9KVXbnq5XZBcg1"
+
 [provider]
-cluster = "Localnet"
-wallet = "~/.config/solana/id.json"
+cluster = "Devnet"
+wallet = "~/.config/solana/originchain-devnet.json"
 
 [scripts]
 test = "cargo test -p originchain-program --test protocol_litesvm"

@@ -57,6 +57,7 @@ export interface SignatureEnvelope {
   algorithm: "Ed25519";
   public_key: string;
   signature: string;
+  message_encoding?: "binary-v1" | "utf8-hex-v1";
 }
 
 export class ManifestError extends Error {
@@ -338,8 +339,12 @@ export function manifestHash(core: ManifestCore): string {
   return createHash("sha256").update(concat(MANIFEST_DOMAIN, canonicalJson(core))).digest("hex");
 }
 
-function signatureMessage(core: ManifestCore): Uint8Array {
-  return concat(SIGNATURE_DOMAIN, Uint8Array.from(BufferFromHex(manifestHash(core))));
+function signatureMessage(core: ManifestCore, encoding: SignatureEnvelope["message_encoding"] = "binary-v1"): Uint8Array {
+  const digest = manifestHash(core);
+  if (encoding === "utf8-hex-v1") {
+    return new TextEncoder().encode(`ORIGINCHAIN:MANIFEST-SIGNATURE:V1:UTF8-HEX:${digest}`);
+  }
+  return concat(SIGNATURE_DOMAIN, Uint8Array.from(BufferFromHex(digest)));
 }
 
 function BufferFromHex(value: string): number[] {
@@ -371,7 +376,7 @@ export function verifyManifestSignature(
     if (publicBytes.length !== 32 || signature.length !== 64) return false;
     const spkiPrefix = Uint8Array.from([0x30, 0x2a, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x70, 0x03, 0x21, 0x00]);
     const publicKey = createPublicKey({ key: concat(spkiPrefix, publicBytes), format: "der", type: "spki" });
-    return ed25519Verify(null, signatureMessage(core), publicKey, signature);
+    return ed25519Verify(null, signatureMessage(core, envelope.message_encoding), publicKey, signature);
   } catch {
     return false;
   }

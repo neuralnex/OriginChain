@@ -16,6 +16,9 @@ Status: initial decisions for protocol v1. Changes require a versioning note and
 | D-010 | A content-hash mismatch is `tampered` only when a specific trusted version is claimed. With no matching record the result is `unverified`; missing required evidence is `incomplete`. | Verification outcomes avoid treating every unknown file as malicious. |
 | D-011 | The protocol accepts any syntactically valid media type. The first product workflows and acceptance examples target images and video. | New media types do not require a protocol fork. |
 | D-012 | Each version is independently committed on-chain in the first implementation; Merkle batching is deferred. | Simpler verification and authorization semantics for the first usable release. |
+| D-013 | Manifest signature envelopes may select `utf8-hex-v1` to sign a readable ASCII representation of the manifest digest when wallet providers misclassify binary signatures as transaction requests; omitted encoding remains the original binary-v1 profile. | Keeps existing signatures verifiable and avoids ambiguous binary payloads in wallet message-signing APIs. |
+| D-014 | OriginChain combines open-source, cloneable OS/application adapters with a hosted collaboration and media/file-sharing platform; adapters must also support a replaceable/self-hosted endpoint. | Keeps device integration extensible and user data portable while giving teams a usable shared product. |
+| D-015 | The initial hosted platform is free to users and founder-funded, including configured infrastructure and sponsored Solana costs; fair-use ceilings, rate limits, and sponsor budgets are required before external beta. | Honors founder-funded launch intent while bounding storage, bandwidth, and transaction exposure. User billing requires a later deliberate decision. |
 
 ## Deferred decisions
 

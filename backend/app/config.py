@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     max_upload_bytes: int = 100 * 1024 * 1024
     request_timeout_seconds: float = 20.0
     auto_create_tables: bool = True
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
 
 
 @lru_cache

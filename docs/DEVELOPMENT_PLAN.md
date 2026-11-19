@@ -10,13 +10,17 @@ Milestones are gated by demonstrated behavior. The dedicated OS is a long-term g
 | M4 Backend | FastAPI, PostgreSQL/SQLite, migrations, API, chain adapter | API contracts, idempotency, signed manifests, and local mock flow work; Solana adapter confirms wallet-signed account commitments. |
 | M5 Verification/indexer | Independent chain and manifest verification | Verifier distinguishes verified, unverified, tampered, and incomplete evidence. |
 | M6 Portable object | Versioned archive with safe import/export | Round trips preserve content and IDs; malformed archives and path traversal are rejected. |
-| M7 Runtime foundation | Rust local service, SQLite queue, Linux observer | Opt-in observation and offline reconciliation work without blocking saves. |
-| M8 SDKs/integrations | TypeScript and Python SDKs, signed app declarations | A sample image/video integration creates a version and preserves branch semantics. |
-| M9 Explorer | Asset, verification, and version graph views | Chain-backed evidence is distinguished from mock or backend-only data. |
-| M10 Security/interoperability | Threat review, adversarial tests, independent implementation exercise | Protocol and service boundaries are reviewed before mainnet planning. |
-| M11 Mainnet preparation | Operations, monitoring, recovery, deployment controls | Audited program and operational readiness are complete before any production launch. |
-| M12 Dedicated OS research | Requirements and feasibility only | Starts after protocol/runtime stability and user demand. |
+| M7 Runtime protocol | Local identity states, privacy/coverage model, device keys, reconciliation contract | Device identity, registered identity, and authorship claims are clearly distinct. |
+| M8 Linux runtime | Rust user service, SQLite, selected-folder observer, local image/video IDs | Local identity survives restart; pause/exclusions/reconciliation work; no content upload or chain write happens silently. |
+| M9 Hosted collaboration platform | User/team accounts, workspaces, roles, private media/file sharing, history | Authorized collaborators can share and retrieve encrypted objects; deletion and public-chain limits are clear. |
+| M10 Sponsored registration | Sponsor-paid devnet tx/rent, user-signed claims, budget/rate controls | Chain records retain the user as creator; sponsor cost is isolated, limited, auditable, and explicit in UX. |
+| M11 Portable identity | Signed provenance package and runtime-platform sync handoff | A copied package verifies on another device; an ordinary file transfer adds no version. |
+| M12 Desktop platforms | Native macOS and Windows permission, watcher, and share/file-manager adapters | Selected locations work with accurate coverage and restart recovery. |
+| M13 Mobile platforms | Native Android and iOS capture/import/share apps and permission-limited library integrations | Users can assign identity at capture/import; limited media access and background limits are surfaced honestly. |
+| M14 SDKs and Explorer | App declarations, asset/history/verification screens | Apps can create semantic events; explorer distinguishes local, claimed, and chain-verified evidence. |
+| M15 Security/interoperability | Threat review, independent implementation exercise, recovery controls | Trust and privacy boundaries are reviewed before mainnet planning. |
+| M16 Production preparation | Operations, monitoring, program and update security | Audited program and operational readiness before broad distribution. |
 
 ## Current milestone scope
 
-M1 and M2 are complete: the contract is documented and Python/TypeScript implementations agree on the same signed known-answer vector. M3 builds locally; no devnet deployment has occurred. M4 now has an API implementation, persistence models and migration, local mock mode, wallet-signed Solana RPC adapter, and file verification endpoint. The backend has not yet been installed or exercised against PostgreSQL/devnet in this workspace.
+M1-M4 and the devnet program/registry are in place. The browser has registered an image on devnet. The next build milestone is the Linux local-identity runtime, followed by hosted collaboration and sponsored registration. There is no device runtime, user/team authentication, managed media storage, or sponsored transaction service yet. Mobile and desktop support must use separate native adapters and honor platform permission boundaries.

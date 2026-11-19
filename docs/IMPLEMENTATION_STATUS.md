@@ -19,11 +19,23 @@ Updated: 2026-11-19
 - [x] Anchor build ran the Rust unit and LiteSVM targets successfully.
 - [x] Backend API implementation: signed image/video registration, branching versions, history/manifests, upload limits, idempotency, SQLAlchemy records, Alembic migration, mock adapter, and Solana RPC adapter.
 - [x] File verification endpoint distinguishes verified, unverified, tampered, and incomplete; mock records never report verified.
-- [ ] Install backend dependencies and exercise local API against SQLite, PostgreSQL, and Solana devnet.
+- [x] Anchor project now targets devnet and includes a registry initialization utility.
+- [x] Deployed OriginChain program to Solana devnet and initialized the registry PDA.
+- [x] Added a Vite/TypeScript browser registration app for Phantom devnet, including detached manifest signing, on-chain register-asset transaction construction, and API submission.
+- [x] Enabled local Explorer-to-API CORS origins.
+- [x] Install Explorer npm dependencies and build the browser app successfully.
+- [x] User completed an end-to-end Phantom image registration; API confirmed and validated the devnet transaction and resulting accounts.
+- [x] User ran the backend with SQLite and the Solana devnet adapter for that registration.
+- [ ] Exercise PostgreSQL deployment configuration.
 - [ ] Event indexer and reconciliation worker.
 - [ ] Portable object format.
 - [ ] Runtime and application integrations.
-- [ ] Explorer.
+- [x] Defined the device-runtime coverage model and iOS/macOS/Windows/Linux/Android delivery order in `specs/runtime-v1.md`.
+- [x] Recorded the open-source adapters + hosted collaboration platform model and founder-funded free launch in `specs/platform-v1.md`.
+- [ ] R1 runtime protocol details and R2 Linux local identity service.
+- [ ] Hosted user/team accounts, collaboration permissions, managed media/file sharing, and object storage.
+- [ ] Sponsored Solana registration with bounded platform payer and user creator identity.
+- [ ] Explorer history, verification, and version creation screens.
 
 ## Environment
 
@@ -39,9 +51,12 @@ Python 3.12, rustup Rust 1.100.0, Solana CLI 4.4.1, Anchor CLI 1.2.2, Node 22, n
 - `cargo check -p originchain-program --test protocol_litesvm`: passed; this compiles the scenario target without executing it.
 - `anchor build`: passed after fetching the missing `serde_spanned` crate. It generated `target/deploy/originchain_program.so` and `target/idl/originchain_program.json`, and ran unit/LiteSVM targets successfully. Anchor/Solana emitted non-fatal macro `cfg` and LTO warnings.
 - Program keypair public key matches the configured localnet program ID: `J6grB9Db5FjKYkGLWf4n81BZg75WEE9KVXbnq5XZBcg1`.
+- Devnet program: `J6grB9Db5FjKYkGLWf4n81BZg75WEE9KVXbnq5XZBcg1`.
+- Devnet registry PDA: `7FUEykZ6H2KhLokQcFqzhgNnn7Hy1HTsrC6MLCc6DKL6`.
+- Devnet ProgramData: `6FAXEDjK8pCYSV5SVZK2bbAPtZZhQ9BCx8s4v3bvoehR`; upgrade authority is the configured devnet payer wallet.
 
 ## Completion record
 
-M1, M2, and local M3 acceptance checks pass. The current RFC 8785 known-answer fixture contains only ASCII strings; a wider cross-language Unicode/string suite remains before protocol release. The program has not been deployed to devnet.
+M1, M2, local M3, and the devnet deployment/registry initialization are complete. The current RFC 8785 known-answer fixture contains only ASCII strings; a wider cross-language Unicode/string suite remains before protocol release. The global Solana CLI endpoint remains mainnet; project Anchor commands target devnet through `Anchor.toml`.
 
-M4 code is implemented but not runtime-verified in this environment. The backend does not store submitted media bytes. Solana-backed registration requires a wallet-signed transaction; this repository contains no server-side signing key.
+The browser registration and API-to-devnet transaction path has been demonstrated by the user with a real image. The backend does not store submitted media bytes. Solana-backed registration requires a wallet-signed transaction; the repository contains no server-side signing key. No device runtime exists yet; `specs/runtime-v1.md` defines its scope and acceptance gates.

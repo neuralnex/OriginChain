@@ -277,9 +277,15 @@ def verify_manifest_signature(
         signature = _decode_base58_bytes(envelope.get("signature", ""))
         if len(public_bytes) != 32 or len(signature) != 64:
             return False
-        Ed25519PublicKey.from_public_bytes(public_bytes).verify(
-            signature, SIGNATURE_DOMAIN + bytes.fromhex(manifest_hash(core))
-        )
+        digest = bytes.fromhex(manifest_hash(core))
+        encoding = envelope.get("message_encoding", "binary-v1")
+        if encoding == "binary-v1":
+            message = SIGNATURE_DOMAIN + digest
+        elif encoding == "utf8-hex-v1":
+            message = b"ORIGINCHAIN:MANIFEST-SIGNATURE:V1:UTF8-HEX:" + digest.hex().encode("ascii")
+        else:
+            return False
+        Ed25519PublicKey.from_public_bytes(public_bytes).verify(signature, message)
     except (ValueError, InvalidSignature, ManifestError):
         return False
     return True

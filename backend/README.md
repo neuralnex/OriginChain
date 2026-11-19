@@ -7,13 +7,20 @@ The first backend slice accepts signed image and video manifests, fingerprints t
 From the repository root:
 
 ```sh
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -e backend
-PYTHONPATH=backend:packages/core/src uvicorn app.main:app --reload
+python3 -m venv .venv
+.venv/bin/python -m pip install -e backend
+PYTHONPATH=backend:packages/core/src .venv/bin/python -m uvicorn app.main:app --reload
 ```
 
-By default the API uses SQLite and a deterministic `mock` chain adapter. The API starts at `http://127.0.0.1:8000`; OpenAPI docs are at `/docs`. Mock commitments are development records and verification returns `incomplete`, never `verified`.
+Using `.venv/bin/python` explicitly avoids accidentally running the system `uvicorn` or system `cryptography` package when shell activation or `PATH` is misconfigured.
+
+With no `.env` overrides, the API uses SQLite and a deterministic `mock` chain adapter. If your repository `.env` sets `DATABASE_URL` to PostgreSQL, either start PostgreSQL or override it for local development with:
+
+```sh
+DATABASE_URL=sqlite:///./originchain.db CHAIN_ADAPTER=mock PYTHONPATH=backend:packages/core/src venv/bin/python -m uvicorn app.main:app --reload
+```
+
+The API starts at `http://127.0.0.1:8000`; OpenAPI docs are at `/docs`. Mock commitments are development records and verification returns `incomplete`, never `verified`.
 
 For PostgreSQL and Solana devnet, configure `DATABASE_URL`, `CHAIN_ADAPTER=solana`, and `SOLANA_RPC_URL` in the process environment or the repository `.env`. The client must submit a wallet-signed serialized transaction in `transaction_base64`; the server does not hold wallet keys. The RPC adapter waits for confirmation and checks the resulting OriginChain account bytes against the manifest before persisting the record.
 
@@ -23,7 +30,7 @@ For migration-managed environments, turn off automatic table creation and run fr
 alembic upgrade head
 ```
 
-Configuration variables: `DATABASE_URL`, `CHAIN_ADAPTER` (`mock` or `solana`), `SOLANA_RPC_URL`, `SOLANA_PROGRAM_ID`, `MAX_UPLOAD_BYTES`, `REQUEST_TIMEOUT_SECONDS`, and `AUTO_CREATE_TABLES`.
+Configuration variables: `DATABASE_URL`, `CHAIN_ADAPTER` (`mock` or `solana`), `SOLANA_RPC_URL`, `SOLANA_PROGRAM_ID`, `MAX_UPLOAD_BYTES`, `REQUEST_TIMEOUT_SECONDS`, `AUTO_CREATE_TABLES`, and `CORS_ORIGINS` (comma-separated browser origins; defaults to the local Vite Explorer origins).
 
 ## API surface
 

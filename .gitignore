@@ -28,10 +28,12 @@ rustc-ice-*.txt
 __pycache__/
 .pytest_cache/
 *.py[cod]
+*.db
 
 # Node and generated package output
 node_modules/
 dist/
+*.tsbuildinfo
 
 # Secrets and local credentials
 .env

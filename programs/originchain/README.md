@@ -21,7 +21,24 @@ All IDs and hashes are passed as fixed 32-byte values, not UTF-8 strings. IDs mu
 
 The on-chain `created_at` and `sequence` describe chain ordering. The signed manifest retains its separate claimed timestamp. Version sequence is a per-Origin ordering hint, not identity; concurrent branches are valid.
 
-The current program ID is backed by a local development keypair in the ignored `target/deploy/` directory. It exists only for local builds and tests. Never use that keypair for a production deployment; generate a production program ID and follow a separate deployment process.
+The current program ID is backed by a development keypair in the ignored `target/deploy/` directory. It can be used for devnet deployment and testing, but never for mainnet; generate and audit a separate program ID/keypair for a production deployment.
+
+## Devnet deployment
+
+`Anchor.toml` targets devnet. The configured CLI payer wallet must exist and have devnet SOL before deployment. If you do not already have a CLI wallet, create a devnet-only keypair with `solana-keygen new --outfile ~/.config/solana/id.json`; keep its recovery phrase private and offline. Then run:
+
+```sh
+solana airdrop 2 --url devnet
+solana balance --url devnet
+anchor build
+anchor deploy --provider.cluster devnet
+solana program show J6grB9Db5FjKYkGLWf4n81BZg75WEE9KVXbnq5XZBcg1 --url devnet
+venv/bin/python scripts/initialize_registry.py
+```
+
+The last command creates the registry PDA needed before asset registration. It is safe to run again after initialization. Never paste or commit wallet key material.
+
+The program is deployed on devnet at `J6grB9Db5FjKYkGLWf4n81BZg75WEE9KVXbnq5XZBcg1`; its registry PDA is `7FUEykZ6H2KhLokQcFqzhgNnn7Hy1HTsrC6MLCc6DKL6`. The program account's current upgrade authority is the configured devnet payer wallet.
 
 ## Current limits
 
