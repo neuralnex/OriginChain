@@ -32,7 +32,9 @@ Updated: 2026-11-19
 - [ ] Runtime and application integrations.
 - [x] Defined the device-runtime coverage model and iOS/macOS/Windows/Linux/Android delivery order in `specs/runtime-v1.md`.
 - [x] Recorded the open-source adapters + hosted collaboration platform model and founder-funded free launch in `specs/platform-v1.md`.
-- [ ] R1 runtime protocol details and R2 Linux local identity service.
+- [x] R1 runtime protocol details, device-local signed identities, state model, permission controls, and reconciliation rules documented in `specs/runtime-v1.md`.
+- [x] R2 early Linux local identity observer implemented in `runtime/daemon`: selected-folder watching, SQLite index, local signed sidecars/events, streaming image/video hashes, pause/exclusion controls, and restart reconciliation.
+- [ ] Manually smoke-run Linux runtime lifecycle: new file, unchanged restart, copied file, changed tracked file, exclusion, and pause/resume. No media upload or chain write is part of this slice.
 - [ ] Hosted user/team accounts, collaboration permissions, managed media/file sharing, and object storage.
 - [ ] Sponsored Solana registration with bounded platform payer and user creator identity.
 - [ ] Explorer history, verification, and version creation screens.
@@ -47,6 +49,7 @@ Python 3.12, rustup Rust 1.100.0, Solana CLI 4.4.1, Anchor CLI 1.2.2, Node 22, n
 - `npm test` in `packages/sdk-js`: TypeScript build and protocol vector tests passed.
 - `scripts/verify_protocol_vectors.py`: JSON Schema, content hash, canonical bytes, manifest hash, and Ed25519 vector passed.
 - `git diff --check`: passed.
+- `cargo build -p originchain-runtime`: passed; watcher lifecycle has not yet been exercised manually.
 - `cargo check -p originchain-program --lib` with Rust 1.100.0: passed.
 - `cargo check -p originchain-program --test protocol_litesvm`: passed; this compiles the scenario target without executing it.
 - `anchor build`: passed after fetching the missing `serde_spanned` crate. It generated `target/deploy/originchain_program.so` and `target/idl/originchain_program.json`, and ran unit/LiteSVM targets successfully. Anchor/Solana emitted non-fatal macro `cfg` and LTO warnings.
@@ -59,4 +62,4 @@ Python 3.12, rustup Rust 1.100.0, Solana CLI 4.4.1, Anchor CLI 1.2.2, Node 22, n
 
 M1, M2, local M3, and the devnet deployment/registry initialization are complete. The current RFC 8785 known-answer fixture contains only ASCII strings; a wider cross-language Unicode/string suite remains before protocol release. The global Solana CLI endpoint remains mainnet; project Anchor commands target devnet through `Anchor.toml`.
 
-The browser registration and API-to-devnet transaction path has been demonstrated by the user with a real image. The backend does not store submitted media bytes. Solana-backed registration requires a wallet-signed transaction; the repository contains no server-side signing key. No device runtime exists yet; `specs/runtime-v1.md` defines its scope and acceptance gates.
+The browser registration and API-to-devnet transaction path has been demonstrated by the user with a real image. The backend does not store submitted media bytes. Solana-backed registration requires a wallet-signed transaction; the repository contains no server-side signing key. The Linux runtime is early development: it builds, but the local lifecycle still needs a manual smoke run; portable export/import is not implemented.

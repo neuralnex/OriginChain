@@ -22,7 +22,7 @@ Core invariant: transmission, copying, moving, renaming, and unchanged download 
 
 ## Current state and next milestone
 
-The user has successfully registered a first image on Solana devnet from the Phantom browser flow. The repository has no device runtime implementation yet. The next milestone is R1 runtime protocol details followed by R2, a Linux user service for opted-in folders, local SQLite identity/event state, streaming fingerprints, and restart reconciliation. Do not start with kernel drivers, auto-publishing, or broad mobile permissions.
+The user has successfully registered a first image on Solana devnet from the Phantom browser flow. The repository has no device runtime implementation yet. The next milestone is R1 runtime protocol details followed by R2, a Linux user service for opted-in folders, local SQLite identity/event state, streaming fingerprints, and restart reconciliation. The delivery sequence is Linux, portable identity, macOS/Windows, Android/iOS, then hosted collaboration and sponsored registration. Do not start with kernel drivers, auto-publishing, or broad mobile permissions.
 
 ## Product lifecycle
 

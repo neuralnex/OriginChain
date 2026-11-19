@@ -1,5 +1,5 @@
 [workspace]
-members = ["programs/originchain"]
+members = ["programs/originchain", "runtime/daemon"]
 resolver = "2"
 
 [profile.release]

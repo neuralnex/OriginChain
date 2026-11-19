@@ -24,7 +24,7 @@ Content bytes determine a version's integrity fingerprint. A transmission, copy,
 - `packages/core/` Python protocol reference code
 - `programs/originchain/` Anchor registry and LiteSVM scenarios
 - `backend/` FastAPI, persistence, chain adapter, and verification API
-- `runtime/` local-first device service (planned; Linux first)
+- `runtime/` early local-first Linux image/video observer (see [runtime README](runtime/daemon/README.md))
 - `packages/sdk-js/`, `packages/sdk-python/` developer SDKs (planned)
 - `apps/explorer/` browser registration app (Vite + TypeScript)
 - `integrations/` application integration interfaces (planned)

@@ -12,15 +12,15 @@ Milestones are gated by demonstrated behavior. The dedicated OS is a long-term g
 | M6 Portable object | Versioned archive with safe import/export | Round trips preserve content and IDs; malformed archives and path traversal are rejected. |
 | M7 Runtime protocol | Local identity states, privacy/coverage model, device keys, reconciliation contract | Device identity, registered identity, and authorship claims are clearly distinct. |
 | M8 Linux runtime | Rust user service, SQLite, selected-folder observer, local image/video IDs | Local identity survives restart; pause/exclusions/reconciliation work; no content upload or chain write happens silently. |
-| M9 Hosted collaboration platform | User/team accounts, workspaces, roles, private media/file sharing, history | Authorized collaborators can share and retrieve encrypted objects; deletion and public-chain limits are clear. |
-| M10 Sponsored registration | Sponsor-paid devnet tx/rent, user-signed claims, budget/rate controls | Chain records retain the user as creator; sponsor cost is isolated, limited, auditable, and explicit in UX. |
-| M11 Portable identity | Signed provenance package and runtime-platform sync handoff | A copied package verifies on another device; an ordinary file transfer adds no version. |
-| M12 Desktop platforms | Native macOS and Windows permission, watcher, and share/file-manager adapters | Selected locations work with accurate coverage and restart recovery. |
-| M13 Mobile platforms | Native Android and iOS capture/import/share apps and permission-limited library integrations | Users can assign identity at capture/import; limited media access and background limits are surfaced honestly. |
+| M9 Portable identity | Signed provenance package and Linux runtime import/export | A copied package verifies on another device; an ordinary file transfer adds no version. |
+| M10 Desktop platforms | Native macOS and Windows permission, watcher, and share/file-manager adapters | Selected locations work with accurate coverage and restart recovery. |
+| M11 Mobile platforms | Native Android and iOS capture/import/share apps and permission-limited library integrations | Users can assign identity at capture/import; limited media access and background limits are surfaced honestly. |
+| M12 Hosted collaboration platform | User/team accounts, workspaces, roles, private media/file sharing, history | Authorized collaborators can share and retrieve encrypted objects; deletion and public-chain limits are clear. |
+| M13 Sponsored registration | Sponsor-paid devnet tx/rent, user-signed claims, budget/rate controls | Chain records retain the user as creator; sponsor cost is isolated, limited, auditable, and explicit in UX. |
 | M14 SDKs and Explorer | App declarations, asset/history/verification screens | Apps can create semantic events; explorer distinguishes local, claimed, and chain-verified evidence. |
 | M15 Security/interoperability | Threat review, independent implementation exercise, recovery controls | Trust and privacy boundaries are reviewed before mainnet planning. |
 | M16 Production preparation | Operations, monitoring, program and update security | Audited program and operational readiness before broad distribution. |
 
 ## Current milestone scope
 
-M1-M4 and the devnet program/registry are in place. The browser has registered an image on devnet. The next build milestone is the Linux local-identity runtime, followed by hosted collaboration and sponsored registration. There is no device runtime, user/team authentication, managed media storage, or sponsored transaction service yet. Mobile and desktop support must use separate native adapters and honor platform permission boundaries.
+M1-M4 and the devnet program/registry are in place. The browser has registered an image on devnet. An early opt-in Linux local identity observer is now implemented; its next gates are a manual lifecycle smoke run and portable identity. Follow the device roadmap in order: Linux local identities, portable identity, macOS/Windows, then Android/iOS. Hosted collaboration and sponsored registration follow the native adapter milestones. There is no user/team authentication, managed media storage, or sponsored transaction service yet.

@@ -61,8 +61,10 @@ The sponsor must have a per-user and global daily budget, rate limits, duplicate
 
 1. Adapter interface and endpoint configuration are documented.
 2. Linux runtime creates and verifies local identities without a hosted account.
-3. Hosted account, workspace, permission, and encrypted object-sharing services exist.
-4. Runtime sync is resumable and idempotent, with explicit per-workspace policy.
-5. A sponsored devnet transaction preserves user creator identity while the service pays rent and fee.
-6. Budget, quota, privacy, deletion, and emergency-pause controls work before inviting external beta users.
-7. macOS/Windows adapters and native Android/iOS capture/share apps connect through the same versioned contract, respecting their individual platform permissions.
+3. Linux portable identity import/export verifies across devices.
+4. macOS and Windows adapters support selected locations and recover missed events.
+5. Android and iOS capture/import/share flows work within their native permission and lifecycle limits.
+6. Hosted accounts, workspaces, permissions, and encrypted object sharing connect to the versioned adapter contract.
+7. Runtime sync is resumable and idempotent, with explicit per-workspace policy.
+8. A sponsored devnet transaction preserves user creator identity while the service pays rent and fee.
+9. Budget, quota, privacy, deletion, and emergency-pause controls work before inviting external beta users.

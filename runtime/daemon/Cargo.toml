@@ -1,0 +1,20 @@
+[package]
+name = "originchain-runtime"
+version = "0.1.0"
+edition = "2021"
+description = "Opt-in Linux runtime for local OriginChain media identities"
+
+[[bin]]
+name = "originchain-runtime"
+path = "src/main.rs"
+
+[dependencies]
+bs58 = "0.5"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+ed25519-dalek = "2.2"
+mime_guess = "2.0"
+notify = "8.2"
+rusqlite = { version = "0.37", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
