@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://originchain.org/specs/manifest-v1.schema.json",
+  "title": "OriginChain Protocol v1 signed manifest core",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "protocol_version",
+    "origin_id",
+    "version_id",
+    "manifest_id",
+    "parent_version_id",
+    "content_hash",
+    "hash_algorithm",
+    "media_type",
+    "size_bytes",
+    "actor",
+    "identity_mode",
+    "action_type",
+    "relationship",
+    "created_at"
+  ],
+  "properties": {
+    "protocol": { "const": "originchain" },
+    "protocol_version": { "const": "1.0.0" },
+    "origin_id": { "$ref": "#/$defs/id" },
+    "version_id": { "$ref": "#/$defs/id" },
+    "manifest_id": { "$ref": "#/$defs/id" },
+    "parent_version_id": {
+      "oneOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }]
+    },
+    "content_hash": { "$ref": "#/$defs/sha256" },
+    "hash_algorithm": { "const": "sha-256" },
+    "media_type": {
+      "type": "string",
+      "pattern": "^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+$"
+    },
+    "size_bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "actor_type"],
+      "properties": {
+        "actor_id": { "$ref": "#/$defs/id" },
+        "actor_type": { "enum": ["person", "application", "device", "organization", "unknown"] }
+      }
+    },
+    "identity_mode": { "enum": ["anonymous", "pseudonymous", "credentialed"] },
+    "action_type": { "enum": ["create", "edit", "ai_modify", "transform", "compose"] },
+    "relationship": { "enum": ["root", "continuation", "derivative", "composition"] },
+    "created_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$"
+    },
+    "parent_manifest_hash": {
+      "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["origin_id", "version_id", "role"],
+        "properties": {
+          "origin_id": { "$ref": "#/$defs/id" },
+          "version_id": { "$ref": "#/$defs/id" },
+          "role": { "type": "string", "minLength": 1, "maxLength": 64 }
+        }
+      }
+    },
+    "application_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["application_id", "application_version"],
+      "properties": {
+        "application_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "application_version": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "model_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "model_version": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "parent_version_id": { "type": "null" } }, "required": ["parent_version_id"] },
+      "then": {
+        "properties": {
+          "parent_manifest_hash": { "type": "null" },
+          "relationship": { "enum": ["root", "derivative", "composition"] }
+        },
+        "required": ["parent_manifest_hash"],
+        "allOf": [
+          {
+            "if": { "properties": { "relationship": { "const": "root" } }, "required": ["relationship"] },
+            "then": { "properties": { "action_type": { "const": "create" } } }
+          },
+          {
+            "if": { "properties": { "relationship": { "const": "derivative" } }, "required": ["relationship"] },
+            "then": { "properties": { "sources": { "minItems": 1 } }, "required": ["sources"] }
+          },
+          {
+            "if": { "properties": { "relationship": { "const": "composition" } }, "required": ["relationship"] },
+            "then": { "properties": { "sources": { "minItems": 2 } }, "required": ["sources"] }
+          }
+        ]
+      },
+      "else": {
+        "properties": {
+          "parent_manifest_hash": { "$ref": "#/$defs/sha256" },
+          "relationship": { "enum": ["continuation", "composition"] },
+          "action_type": { "enum": ["edit", "ai_modify", "transform", "compose"] }
+        },
+        "required": ["parent_manifest_hash"]
+      }
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "description": "Base58 encoding that MUST decode to exactly 32 non-zero bytes; syntax length alone is insufficient for validation.",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

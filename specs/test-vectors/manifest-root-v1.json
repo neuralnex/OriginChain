@@ -1,0 +1,35 @@
+{
+  "description": "Deterministic protocol v1 root manifest known-answer vector. The public key and signature are test data only.",
+  "canonicalization": "RFC 8785 JCS UTF-8",
+  "manifest_hash_preimage_prefix_hex": "4f524947494e434841494e3a4d414e49464553543a563100",
+  "core": {
+    "protocol": "originchain",
+    "protocol_version": "1.0.0",
+    "origin_id": "4vJ9JU1bJJE96FWSJKvHsmmFADCg4gpZQff4P3bkLKi",
+    "version_id": "8qbHbw2BbbTHBW1sbeqakYXVKRQM8Ne7pLK7m6CVfeR",
+    "parent_version_id": null,
+    "content_hash": "093aa74d881fd804cb9fed7f21cad9d7e8683a7cc6361dbe2ba72e5325deb479",
+    "hash_algorithm": "sha-256",
+    "media_type": "image/png",
+    "size_bytes": 32,
+    "actor": {
+      "actor_id": "CktRuQ2mttgRGkXJtyksdKHjUdc2C4TgDzyB98oEzy8",
+      "actor_type": "person"
+    },
+    "identity_mode": "pseudonymous",
+    "manifest_id": "GgBaCs3NCBuZN12kCJgAW63ydqohFkHEdfdEXBPzLHq",
+    "action_type": "create",
+    "relationship": "root",
+    "created_at": "2026-01-02T03:04:05Z",
+    "parent_manifest_hash": null,
+    "sources": []
+  },
+  "content_bytes_utf8": "OriginChain fixture image bytes\n",
+  "content_sha256": "093aa74d881fd804cb9fed7f21cad9d7e8683a7cc6361dbe2ba72e5325deb479",
+  "canonical_core_utf8": "{\"action_type\":\"create\",\"actor\":{\"actor_id\":\"CktRuQ2mttgRGkXJtyksdKHjUdc2C4TgDzyB98oEzy8\",\"actor_type\":\"person\"},\"content_hash\":\"093aa74d881fd804cb9fed7f21cad9d7e8683a7cc6361dbe2ba72e5325deb479\",\"created_at\":\"2026-01-02T03:04:05Z\",\"hash_algorithm\":\"sha-256\",\"identity_mode\":\"pseudonymous\",\"manifest_id\":\"GgBaCs3NCBuZN12kCJgAW63ydqohFkHEdfdEXBPzLHq\",\"media_type\":\"image/png\",\"origin_id\":\"4vJ9JU1bJJE96FWSJKvHsmmFADCg4gpZQff4P3bkLKi\",\"parent_manifest_hash\":null,\"parent_version_id\":null,\"protocol\":\"originchain\",\"protocol_version\":\"1.0.0\",\"relationship\":\"root\",\"size_bytes\":32,\"sources\":[],\"version_id\":\"8qbHbw2BbbTHBW1sbeqakYXVKRQM8Ne7pLK7m6CVfeR\"}",
+  "manifest_hash": "3e92d7ea462af0ebca42de9b9016c76b2ba2a0d0bc31ebcf167c7c88a98b87c1",
+  "signature_message_hex": "4f524947494e434841494e3a4d414e49464553542d5349474e41545552453a5631003e92d7ea462af0ebca42de9b9016c76b2ba2a0d0bc31ebcf167c7c88a98b87c1",
+  "signature_algorithm": "Ed25519",
+  "test_public_key_base58": "FAe4sisG95oZ42w7buUn5qEE4TAnfTTFPiguZUHmhiF",
+  "signature_base58": "NfUyTGbm8JPZ9Y59WJJoCAMjD7QA9pMCnDiZ5ENRBuUEmTzj8kEv2x1orEjuWUSC4DENYhXbbQW5MNLecKNjwER"
+}

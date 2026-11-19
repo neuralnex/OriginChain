@@ -1,0 +1,65 @@
+{
+  "description": "Expected identity/version outcomes for protocol v1 lifecycle operations.",
+  "scenarios": [
+    {
+      "name": "register_original_image",
+      "input": "A user explicitly registers previously untracked image bytes.",
+      "expected": { "new_origin": true, "new_version": true, "parent": null, "relationship": "root" }
+    },
+    {
+      "name": "register_original_video",
+      "input": "A user explicitly registers previously untracked video bytes.",
+      "expected": { "new_origin": true, "new_version": true, "parent": null, "relationship": "root" }
+    },
+    {
+      "name": "copy_move_rename_transfer",
+      "input": "The exact same bytes are copied, moved, renamed, or sent to another person.",
+      "expected": { "new_origin": false, "new_version": false, "preserve_origin_id": true, "preserve_version_id": true }
+    },
+    {
+      "name": "human_edit_continuation",
+      "input": "A person changes bytes and continues the same asset lineage.",
+      "expected": { "new_origin": false, "new_version": true, "relationship": "continuation", "parent": "prior_version" }
+    },
+    {
+      "name": "ai_modification_claim",
+      "input": "An application declares an AI modification and output bytes differ.",
+      "expected": { "new_origin": false, "new_version": true, "action_type": "ai_modify", "model_claim_is_not_attestation": true }
+    },
+    {
+      "name": "format_conversion",
+      "input": "A file is re-encoded and output bytes differ while continuing the asset.",
+      "expected": { "new_origin": false, "new_version": true, "action_type": "transform", "relationship": "continuation" }
+    },
+    {
+      "name": "independent_branches",
+      "input": "Two actors independently edit the same parent version.",
+      "expected": { "new_origin": false, "new_version": true, "children_share_parent": true, "siblings_are_both_valid": true }
+    },
+    {
+      "name": "separate_derivative",
+      "input": "A creator makes a derivative treated as a separate asset.",
+      "expected": { "new_origin": true, "new_version": true, "parent": null, "relationship": "derivative", "source_reference_required": true }
+    },
+    {
+      "name": "composition_from_multiple_sources",
+      "input": "A new asset combines two or more registered source versions.",
+      "expected": { "new_origin": true, "new_version": true, "parent": null, "relationship": "composition", "source_references_minimum": 2 }
+    },
+    {
+      "name": "duplicate_bytes_new_registration",
+      "input": "A different publisher explicitly registers byte-identical content as a distinct asset.",
+      "expected": { "same_content_hash": true, "merge_origins": false }
+    },
+    {
+      "name": "changed_file_claims_known_version",
+      "input": "A verifier receives bytes whose hash differs from a specifically claimed committed Version.",
+      "expected": { "outcome": "tampered" }
+    },
+    {
+      "name": "unknown_file",
+      "input": "No matching trusted Origin/Version record is found.",
+      "expected": { "outcome": "unverified" }
+    }
+  ]
+}

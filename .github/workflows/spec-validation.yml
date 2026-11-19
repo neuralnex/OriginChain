@@ -1,0 +1,35 @@
+name: Spec validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install spec validation dependency
+        run: python -m pip install -r requirements-dev.txt
+      - name: Parse protocol schemas and fixtures
+        run: |
+          python -m json.tool specs/manifest-schema.json > /dev/null
+          python -m json.tool specs/test-vectors/manifest-root-v1.json > /dev/null
+          python -m json.tool specs/test-vectors/semantics-v1.json > /dev/null
+      - name: Verify protocol known-answer vectors
+        run: python scripts/verify_protocol_vectors.py
+      - name: Test Python protocol core
+        run: python -m pytest packages/core/tests
+        env:
+          PYTHONPATH: packages/core/src
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: packages/sdk-js/package-lock.json
+      - name: Test TypeScript protocol core
+        working-directory: packages/sdk-js
+        run: npm ci && npm test
